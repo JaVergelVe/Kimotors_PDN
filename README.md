@@ -20,6 +20,7 @@ Kimotors_PDN es una aplicación web que permite a los usuarios explorar una ampl
 
 ```bash
 git clone https://github.com/tuusuario/Kimotors_PDN.git
+```
 
 ## Enlace con Jira
 
