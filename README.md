@@ -37,3 +37,4 @@ Este proyecto está vinculado al tablero de Jira: Kimotors_PDN para la gestión 
 
 - Juan Jose Quin
 - Julian Andres Vergel
+
