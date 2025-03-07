@@ -45,6 +45,18 @@ Por otro lado, los concesionarios y fabricantes se beneficiarán al tener un can
 git clone https://github.com/tuusuario/Kimotors_PDN.git
 ```
 
+## Ramas del proyecto
+
+- **Main:** Rama principal y estable para producción.
+- **Develop:** Rama para pruebas e integración de nuevas funcionalidades.
+- **Feature_Julian:** Rama de desarrollo asignada a Julian para implementar nuevas características.
+- **Feature_JuanJose:** Rama de desarrollo asignada a Juan Jose para implementar nuevas características.
+
+Main<br>
+└── Develop<br>
+&emsp;&emsp;├── Feature_JuanJose<br>
+&emsp;&emsp;└── Feature_Julian
+
 ## Enlace con Jira
 
 Este proyecto está vinculado al tablero de Jira: [Kimotors_PDN](https://javergelve.atlassian.net/jira/software/projects/PDN/boards/3?atlOrigin=eyJpIjoiMmFmMDJiMWQzOTkxNGIzYTg0ZjUwZDFhOWZkYjVlYzUiLCJwIjoiaiJ9) para la gestión ágil del desarrollo.
