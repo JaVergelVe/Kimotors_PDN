@@ -1,11 +1,13 @@
-package Backend_Kimotors.Kimotors.model;
+package Backend_Kimotors.Kimotors.model.motos;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class Suspension {
+
+public class Ruedas {
+
     private String delantera;
     private String trasera;
 
