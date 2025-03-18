@@ -1,21 +1,18 @@
-package Backend_Kimotors.Kimotors.model;
+package Backend_Kimotors.Kimotors.model.usuarios;
 
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.List;
-import java.util.Map;
-
-@Document(collection = "kimotors")
+@Document(collection = "users")
 @Getter
 @Setter
-public class Motocicletas {
-
+public class Usuarios {
     @Id
     private String id;
-    private Map<String, List<Moto>> motocicletas;
 
-
+    private String username;
+    private String email;
+    private String password;
 }

@@ -1,8 +1,8 @@
 package Backend_Kimotors.Kimotors.service;
 
 
-import Backend_Kimotors.Kimotors.model.Moto;
-import Backend_Kimotors.Kimotors.model.Motocicletas;
+import Backend_Kimotors.Kimotors.model.motos.Moto;
+import Backend_Kimotors.Kimotors.model.motos.Motocicletas;
 import Backend_Kimotors.Kimotors.repository.MotocicletasRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
