@@ -39,10 +39,13 @@ public class UsuariosService {
 
     public void deleteUserByEmail(String email) {
         Optional<Usuarios> usuario = usuariosRepository.findByEmail(email);
+
         if (usuario.isPresent()) {
-            usuariosRepository.deleteByEmail(email);
+            System.out.println("Eliminando usuario: " + usuario.get());
+            usuariosRepository.delete(usuario.get());
         } else {
-            throw new IllegalArgumentException("Usuario no encontrado con el email: " + email);
+            System.err.println("Usuario no encontrado para eliminar con email: " + email);
+            throw new IllegalArgumentException("Usuario no encontrado");
         }
     }
 }

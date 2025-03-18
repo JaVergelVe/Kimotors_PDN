@@ -51,14 +51,16 @@ public class UsuariosController {
     }
 
     @DeleteMapping("/email/{email}")
-    public ResponseEntity<String> deleteUserByEmail(@PathVariable String email) {
+    public ResponseEntity<Void> deleteUserByEmail(@PathVariable String email) {
         try {
+            System.out.println("Intentando eliminar el usuario con email: " + email);
             service.deleteUserByEmail(email);
-            return ResponseEntity.ok("Usuario con email " + email + " eliminado exitosamente.");
+            System.out.println("Usuario eliminado con email: " + email);
+            return ResponseEntity.noContent().build();
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al eliminar el usuario.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 }
