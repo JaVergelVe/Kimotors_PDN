@@ -1,4 +1,4 @@
-package Backend_Kimotors.Kimotors;
+package Backend_Kimotors.Kimotors.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

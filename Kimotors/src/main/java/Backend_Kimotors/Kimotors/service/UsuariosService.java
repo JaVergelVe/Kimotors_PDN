@@ -36,4 +36,13 @@ public class UsuariosService {
         usuario.setPassword(newPassword);
         return usuariosRepository.save(usuario);
     }
+
+    public void deleteUserByEmail(String email) {
+        Optional<Usuarios> usuario = usuariosRepository.findByEmail(email);
+        if (usuario.isPresent()) {
+            usuariosRepository.deleteByEmail(email);
+        } else {
+            throw new IllegalArgumentException("Usuario no encontrado con el email: " + email);
+        }
+    }
 }

@@ -49,4 +49,16 @@ public class UsuariosController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al actualizar la contraseña");
         }
     }
+
+    @DeleteMapping("/email/{email}")
+    public ResponseEntity<String> deleteUserByEmail(@PathVariable String email) {
+        try {
+            service.deleteUserByEmail(email);
+            return ResponseEntity.ok("Usuario con email " + email + " eliminado exitosamente.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al eliminar el usuario.");
+        }
+    }
 }
