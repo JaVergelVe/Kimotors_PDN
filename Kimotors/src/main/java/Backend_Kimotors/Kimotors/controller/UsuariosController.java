@@ -1,5 +1,6 @@
 package Backend_Kimotors.Kimotors.controller;
 
+import Backend_Kimotors.Kimotors.model.usuarios.LoginRequest;
 import Backend_Kimotors.Kimotors.model.usuarios.Usuarios;
 import Backend_Kimotors.Kimotors.service.UsuariosService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -35,6 +37,22 @@ public class UsuariosController {
             return ResponseEntity.status(HttpStatus.CREATED).body(nuevoUsuario);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Usuarios> login(@RequestBody LoginRequest request) {
+        Optional<Usuarios> userOptional = service.getByEmail(request.getEmail());
+
+        if (userOptional.isPresent()) {
+            Usuarios user = userOptional.get();
+            if (user.getPassword().equals(request.getPassword())) {
+                return ResponseEntity.ok(user);
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 
