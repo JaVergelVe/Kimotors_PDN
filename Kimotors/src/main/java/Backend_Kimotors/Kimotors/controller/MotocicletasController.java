@@ -1,5 +1,8 @@
 package Backend_Kimotors.Kimotors.controller;
 
+
+import Backend_Kimotors.Kimotors.model.motos.Moto;
+import Backend_Kimotors.Kimotors.model.motos.Motocicletas;
 import Backend_Kimotors.Kimotors.service.MotocicletasService;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;

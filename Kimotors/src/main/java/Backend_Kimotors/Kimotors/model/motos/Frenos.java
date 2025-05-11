@@ -1,4 +1,4 @@
-package Backend_Kimotors.Kimotors.model;
+package Backend_Kimotors.Kimotors.model.motos;
 
 import lombok.Getter;
 import lombok.Setter;
