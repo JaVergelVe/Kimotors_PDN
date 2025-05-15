@@ -7,6 +7,8 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.*;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Repository;
+import org.springframework.data.mongodb.core.aggregation.ConvertOperators;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -135,22 +137,40 @@ public class MotocicletasRepositoryImpl implements MotocicletasRepositoryCustom 
     }
 
 
-    @Override
-    public List<Document> motosFavoritasDeUsuario(String usuarioId) {
-        LookupOperation lookup = LookupOperation.newLookup()
-                .from("usuarios")
-                .localField("motosPorMarca.v.id")
-                .foreignField("favoritos")
-                .as("favoritas");
 
-        Aggregation aggregation = Aggregation.newAggregation(
+    @Override
+    public List<Document> motosFavoritasDeUsuario(List<String> favoritos) {
+        Aggregation agg = Aggregation.newAggregation(
                 Aggregation.project().and("motocicletas").as("motocicletas"),
                 Aggregation.project().andExpression("objectToArray(motocicletas)").as("motosPorMarca"),
                 Aggregation.unwind("motosPorMarca"),
                 Aggregation.unwind("motosPorMarca.v"),
-                lookup,
-                Aggregation.match(Criteria.where("favoritas._id").is(usuarioId))
+                Aggregation.match(Criteria.where("motosPorMarca.v.modelo").in(favoritos)),
+                Aggregation.project().and("motosPorMarca.v").as("motocicleta")
         );
-        return mongoTemplate.aggregate(aggregation, "motorbikes", Document.class).getMappedResults();
+
+        return mongoTemplate.aggregate(agg, "motorbikes", Document.class).getMappedResults();
     }
+
+    @Override
+    public List<Document> buscarPorTexto(String texto) {
+        Aggregation aggregation = Aggregation.newAggregation(
+                context -> new Document("$project",
+                        new Document("marcas", new Document("$objectToArray", "$motocicletas"))
+                ),
+                Aggregation.unwind("marcas"),
+                Aggregation.unwind("marcas.v"),
+                Aggregation.match(Criteria.where("marcas.v.modelo").regex("^" + texto, "i")),
+                context -> new Document("$project",
+                        new Document("motocicleta", "$marcas.v")
+                )
+        );
+        AggregationResults<Document> results = mongoTemplate.aggregate(aggregation, "motorbikes", Document.class);
+        return results.getMappedResults();
+    }
+
+
+
+
+
 }

@@ -2,9 +2,11 @@ package Backend_Kimotors.Kimotors.controller;
 
 import Backend_Kimotors.Kimotors.model.motos.Moto;
 import Backend_Kimotors.Kimotors.model.motos.Motocicletas;
+import Backend_Kimotors.Kimotors.repository.MotocicletasRepository;
 import Backend_Kimotors.Kimotors.service.MotocicletasService;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +18,8 @@ public class MotocicletasController {
 
     @Autowired
     private MotocicletasService service;
+    @Autowired
+    private MotocicletasRepository motocicletasRepository;
 
     @GetMapping
     public List<Motocicletas> getAll() {
@@ -72,10 +76,14 @@ public class MotocicletasController {
         return service.descomponerDatosMotor(modelo);
     }
 
-
-    @GetMapping("/favoritas")
-    public List<Document> motosFavoritasDeUsuario(@RequestParam String usuarioId) {
-        return service.motosFavoritasDeUsuario(usuarioId);
+    @GetMapping("/buscar/{texto}")
+    public ResponseEntity<List<Document>> buscarMotosPorTexto(@PathVariable String texto) {
+        List<Document> resultados = service.buscarPorTexto(texto);
+        return ResponseEntity.ok(resultados);
     }
+
+
+
+
 
 }

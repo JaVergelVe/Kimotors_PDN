@@ -5,6 +5,8 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
+
 @Document(collection = "users")
 @Getter
 @Setter
@@ -15,4 +17,5 @@ public class Usuarios {
     private String username;
     private String email;
     private String password;
+    private List<String> favoritos;
 }

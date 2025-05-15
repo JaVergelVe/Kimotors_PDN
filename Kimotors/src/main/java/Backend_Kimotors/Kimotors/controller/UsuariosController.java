@@ -3,6 +3,7 @@ package Backend_Kimotors.Kimotors.controller;
 import Backend_Kimotors.Kimotors.model.usuarios.LoginRequest;
 import Backend_Kimotors.Kimotors.model.usuarios.Usuarios;
 import Backend_Kimotors.Kimotors.service.UsuariosService;
+import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import java.util.Optional;
 public class UsuariosController {
     @Autowired
     private UsuariosService service;
+
 
     @GetMapping
     public List<Usuarios> getAll() {
@@ -81,4 +83,23 @@ public class UsuariosController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+
+    @GetMapping("/favoritos/{email}")
+    public ResponseEntity<List<Document>> obtenerFavoritos(@PathVariable String email) {
+        List<Document> motosFavoritas = service.obtenerMotosFavoritasDelUsuario(email);
+        return ResponseEntity.ok(motosFavoritas);
+    }
+    @PostMapping("/favoritos/agregar/{email}/{modelo}")
+    public ResponseEntity<String> agregarFavorito(@PathVariable String email, @PathVariable String modelo) {
+        service.agregarMotoAFavoritos(email, modelo);
+        return ResponseEntity.ok("Moto agregada a favoritos.");
+    }
+
+    @DeleteMapping("/favoritos/eliminar/{email}/{modelo}")
+    public ResponseEntity<String> eliminarFavorito(@PathVariable String email, @PathVariable String modelo) {
+        service.eliminarMotoDeFavoritos(email, modelo);
+        return ResponseEntity.ok("Moto eliminada de favoritos.");
+    }
+
 }
