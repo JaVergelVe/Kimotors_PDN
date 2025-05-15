@@ -16,6 +16,8 @@ public class MotocicletasService {
 
     @Autowired
     private MotocicletasRepository repository;
+    @Autowired
+    private MotocicletasRepository motocicletasRepository;
 
 
     // Obtener todas las motos
@@ -113,8 +115,8 @@ public class MotocicletasService {
         return repository.descomponerDatosMotor(modelo);
     }
 
-    public List<Document> motosFavoritasDeUsuario(String usuarioId) {
-        return repository.motosFavoritasDeUsuario(usuarioId);
+    public List<Document> buscarPorTexto(String texto) {
+        return motocicletasRepository.buscarPorTexto(texto);
     }
 
 }

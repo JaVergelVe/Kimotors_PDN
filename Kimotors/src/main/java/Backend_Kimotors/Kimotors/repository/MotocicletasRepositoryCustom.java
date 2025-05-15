@@ -9,5 +9,7 @@ public interface MotocicletasRepositoryCustom {
     List<Document> motosMasEconomicas(int limite);
     List<Document> motosConPaginacion(int skip, int limit);
     List<Document> descomponerDatosMotor(String modelo);
-    List<Document> motosFavoritasDeUsuario(String usuarioId);
+    List<Document> motosFavoritasDeUsuario(List<String> favoritos);
+    List<Document> buscarPorTexto(String texto);
+
 }
