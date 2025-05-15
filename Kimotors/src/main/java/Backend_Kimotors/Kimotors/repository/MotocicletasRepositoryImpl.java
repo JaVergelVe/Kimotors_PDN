@@ -53,9 +53,7 @@ public class MotocicletasRepositoryImpl implements MotocicletasRepositoryCustom 
                 Aggregation.unwind("motosPorMarca"),
                 Aggregation.unwind("motosPorMarca.v"),
                 Aggregation.project()
-                        .and("motosPorMarca.v.modelo").as("modelo")
-                        .and("motosPorMarca.v.marca").as("marca")
-                        .and("motosPorMarca.v.precio_aprox").as("precio_aprox")
+                        .and("motosPorMarca.v").as("moto")
 
                         .andExpression(
                                 "toDouble(replaceAll(replaceAll(motosPorMarca.v.precio_aprox, ',', ''), ' €', ''))"
@@ -74,7 +72,7 @@ public class MotocicletasRepositoryImpl implements MotocicletasRepositoryCustom 
                 Aggregation.project().andExpression("objectToArray(motocicletas)").as("motosPorMarca"),
                 Aggregation.unwind("motosPorMarca"),
                 Aggregation.unwind("motosPorMarca.v"),
-                Aggregation.match(Criteria.where("motosPorMarca.v.datos_motor.cilindraje").gt(500))
+                Aggregation.match(Criteria.where("motosPorMarca.v.datos_motor.cilindraje").gt(900))
         );
         return mongoTemplate.aggregate(aggregation, "motorbikes", Document.class).getMappedResults();
     }
