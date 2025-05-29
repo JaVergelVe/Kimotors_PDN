@@ -79,6 +79,7 @@ public class UsuariosService {
             usuariosRepository.save(usuario);
         }
     }
+
     public void eliminarMotoDeFavoritos(String email, String modeloMoto) {
         Usuarios usuario = usuariosRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));

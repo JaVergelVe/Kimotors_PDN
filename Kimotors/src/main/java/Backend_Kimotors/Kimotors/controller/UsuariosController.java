@@ -18,7 +18,6 @@ public class UsuariosController {
     @Autowired
     private UsuariosService service;
 
-
     @GetMapping
     public List<Usuarios> getAll() {
         return service.getAll();
@@ -84,12 +83,12 @@ public class UsuariosController {
         }
     }
 
-
     @GetMapping("/favoritos/{email}")
     public ResponseEntity<List<Document>> obtenerFavoritos(@PathVariable String email) {
         List<Document> motosFavoritas = service.obtenerMotosFavoritasDelUsuario(email);
         return ResponseEntity.ok(motosFavoritas);
     }
+
     @PostMapping("/favoritos/agregar/{email}/{modelo}")
     public ResponseEntity<String> agregarFavorito(@PathVariable String email, @PathVariable String modelo) {
         service.agregarMotoAFavoritos(email, modelo);
