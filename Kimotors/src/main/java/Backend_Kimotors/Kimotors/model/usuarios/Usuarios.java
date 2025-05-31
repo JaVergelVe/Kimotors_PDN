@@ -19,5 +19,5 @@ public class Usuarios {
     private String email;
     private String password;
     private List<String> favoritos;
-    private List<Comentario> comentarios;
+
 }

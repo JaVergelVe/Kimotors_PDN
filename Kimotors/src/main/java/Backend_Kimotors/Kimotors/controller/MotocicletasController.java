@@ -18,8 +18,7 @@ public class MotocicletasController {
 
     @Autowired
     private MotocicletasService service;
-    @Autowired
-    private MotocicletasRepository motocicletasRepository;
+
 
     @GetMapping
     public List<Motocicletas> getAll() {
