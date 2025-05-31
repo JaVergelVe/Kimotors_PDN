@@ -93,7 +93,7 @@ public class MotocicletasRepositoryImpl implements MotocicletasRepositoryCustom 
                         .andExpression(
                                 "toDouble(replaceAll(replaceAll(motosPorMarca.v.precio_aprox, ',', ''), ' €', ''))"
                         ).as("precioNumerico"),
-                Aggregation.match(Criteria.where("precioNumerico").lte(precioMaximo)), // 🔥 Aquí está el filtro
+                Aggregation.match(Criteria.where("precioNumerico").lte(precioMaximo)),
                 Aggregation.sort(Sort.by(Sort.Direction.ASC, "precioNumerico"))
         );
 

@@ -1,5 +1,6 @@
 package Backend_Kimotors.Kimotors.controller;
 
+import Backend_Kimotors.Kimotors.model.Comentarios.Comentario;
 import Backend_Kimotors.Kimotors.model.usuarios.LoginRequest;
 import Backend_Kimotors.Kimotors.model.usuarios.Usuarios;
 import Backend_Kimotors.Kimotors.service.UsuariosService;
@@ -18,6 +19,39 @@ public class UsuariosController {
     @Autowired
     private UsuariosService service;
 
+
+    // Agregar comentario
+    @PostMapping("/{username}/comentarios")
+    public ResponseEntity<?> agregarComentario(@PathVariable String username, @RequestBody Comentario comentario) {
+        Optional<Usuarios> usuario = service.agregarComentario(username, comentario);
+        if (usuario.isPresent()) {
+            return ResponseEntity.ok(usuario.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    //  Obtener comentarios
+    @GetMapping("/{username}/comentarios")
+    public ResponseEntity<?> obtenerComentarios(@PathVariable String username) {
+        Optional<List<Comentario>> comentarios = service.obtenerComentarios(username);
+        if (comentarios.isPresent()) {
+            return ResponseEntity.ok(comentarios.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    //  Eliminar comentario por índice
+    @DeleteMapping("/{username}/comentarios/{index}")
+    public ResponseEntity<?> eliminarComentario(@PathVariable String username, @PathVariable int index) {
+        Optional<Usuarios> usuario = service.eliminarComentario(username, index);
+        if (usuario.isPresent()) {
+            return ResponseEntity.ok(usuario.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
     @GetMapping
     public List<Usuarios> getAll() {
@@ -84,12 +118,12 @@ public class UsuariosController {
         }
     }
 
-
     @GetMapping("/favoritos/{email}")
     public ResponseEntity<List<Document>> obtenerFavoritos(@PathVariable String email) {
         List<Document> motosFavoritas = service.obtenerMotosFavoritasDelUsuario(email);
         return ResponseEntity.ok(motosFavoritas);
     }
+
     @PostMapping("/favoritos/agregar/{email}/{modelo}")
     public ResponseEntity<String> agregarFavorito(@PathVariable String email, @PathVariable String modelo) {
         service.agregarMotoAFavoritos(email, modelo);
