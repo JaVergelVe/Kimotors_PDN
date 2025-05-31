@@ -20,47 +20,12 @@ public class UsuariosService {
 
     @Autowired
     private MotocicletasRepositoryCustom motocicletasRepository;
-    @Autowired
-    private UsuariosRepository usuarioRepository;
 
     @Autowired
     public UsuariosService(UsuariosRepository usuariosRepository) {
         this.usuariosRepository = usuariosRepository;
     }
 
-    public Optional<Usuarios> agregarComentario(String username, Comentario comentario) {
-        Optional<Usuarios> usuarioOpt = usuarioRepository.findByUsername(username);
-        if (usuarioOpt.isPresent()) {
-            Usuarios usuario = usuarioOpt.get();
-
-            if (comentario.getFecha() == null) {
-                comentario.setFecha(LocalDateTime.now());
-            }
-
-            usuario.getComentarios().add(comentario);
-            usuarioRepository.save(usuario);
-            return Optional.of(usuario);
-        }
-        return Optional.empty();
-    }
-    public Optional<List<Comentario>> obtenerComentarios(String username) {
-        Optional<Usuarios> usuarioOpt = usuarioRepository.findByUsername(username);
-        return usuarioOpt.map(Usuarios::getComentarios);
-    }
-
-    public Optional<Usuarios> eliminarComentario(String username, int index) {
-        Optional<Usuarios> usuarioOpt = usuarioRepository.findByUsername(username);
-        if (usuarioOpt.isPresent()) {
-            Usuarios usuario = usuarioOpt.get();
-            List<Comentario> comentarios = usuario.getComentarios();
-            if (index >= 0 && index < comentarios.size()) {
-                comentarios.remove(index);
-                usuarioRepository.save(usuario);
-                return Optional.of(usuario);
-            }
-        }
-        return Optional.empty();
-    }
 
 
     public List<Usuarios> getAll() {
