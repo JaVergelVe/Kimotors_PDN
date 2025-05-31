@@ -10,7 +10,7 @@ public class Moto {
 
     private String marca;
     private String modelo;
-    private int año;
+    private int anio;
     private DatosMotor datos_motor;
     private Transmision transmision;
     private Suspension suspension;

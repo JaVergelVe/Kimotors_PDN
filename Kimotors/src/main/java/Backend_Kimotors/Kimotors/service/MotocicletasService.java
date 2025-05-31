@@ -4,8 +4,10 @@ package Backend_Kimotors.Kimotors.service;
 import Backend_Kimotors.Kimotors.model.motos.Moto;
 import Backend_Kimotors.Kimotors.model.motos.Motocicletas;
 import Backend_Kimotors.Kimotors.repository.MotocicletasRepository;
+import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 
 import java.util.*;
 
@@ -14,6 +16,9 @@ public class MotocicletasService {
 
     @Autowired
     private MotocicletasRepository repository;
+    @Autowired
+    private MotocicletasRepository motocicletasRepository;
+
 
     // Obtener todas las motos
     public List<Motocicletas> getAll() {
@@ -79,6 +84,39 @@ public class MotocicletasService {
 
 
         repository.save(motosExistente);
+    }
+
+
+    public List<Document> contarMotosPorMarca() {
+        return repository.contarMotosPorMarca();
+    }
+
+    public List<Document> nombreCompletoMotos() {
+        return repository.nombreCompletoMotos();
+    }
+
+    public List<Document> motosPorPrecioDescendente() {
+        return repository.motosPorPrecioDescendente();
+    }
+
+    public List<Document> motosPorCilindrajeMayorA500() {
+        return repository.motosPorCilindrajeMayorA500();
+    }
+
+    public List<Document> motosMasEconomicas(int limite) {
+        return repository.motosMasEconomicas(limite);
+    }
+
+    public List<Document> motosConPaginacion(int skip, int limit) {
+        return repository.motosConPaginacion(skip, limit);
+    }
+
+    public List<Document> descomponerDatosMotor(String modelo) {
+        return repository.descomponerDatosMotor(modelo);
+    }
+
+    public List<Document> buscarPorTexto(String texto) {
+        return motocicletasRepository.buscarPorTexto(texto);
     }
 
 }

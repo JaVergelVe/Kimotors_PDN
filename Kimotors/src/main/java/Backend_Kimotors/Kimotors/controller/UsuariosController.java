@@ -1,19 +1,57 @@
 package Backend_Kimotors.Kimotors.controller;
 
+import Backend_Kimotors.Kimotors.model.Comentarios.Comentario;
+import Backend_Kimotors.Kimotors.model.usuarios.LoginRequest;
 import Backend_Kimotors.Kimotors.model.usuarios.Usuarios;
 import Backend_Kimotors.Kimotors.service.UsuariosService;
+import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/usuarios")
 public class UsuariosController {
     @Autowired
     private UsuariosService service;
+
+
+    // Agregar comentario
+    @PostMapping("/{username}/comentarios")
+    public ResponseEntity<?> agregarComentario(@PathVariable String username, @RequestBody Comentario comentario) {
+        Optional<Usuarios> usuario = service.agregarComentario(username, comentario);
+        if (usuario.isPresent()) {
+            return ResponseEntity.ok(usuario.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    //  Obtener comentarios
+    @GetMapping("/{username}/comentarios")
+    public ResponseEntity<?> obtenerComentarios(@PathVariable String username) {
+        Optional<List<Comentario>> comentarios = service.obtenerComentarios(username);
+        if (comentarios.isPresent()) {
+            return ResponseEntity.ok(comentarios.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    //  Eliminar comentario por índice
+    @DeleteMapping("/{username}/comentarios/{index}")
+    public ResponseEntity<?> eliminarComentario(@PathVariable String username, @PathVariable int index) {
+        Optional<Usuarios> usuario = service.eliminarComentario(username, index);
+        if (usuario.isPresent()) {
+            return ResponseEntity.ok(usuario.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
     @GetMapping
     public List<Usuarios> getAll() {
@@ -35,6 +73,22 @@ public class UsuariosController {
             return ResponseEntity.status(HttpStatus.CREATED).body(nuevoUsuario);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Usuarios> login(@RequestBody LoginRequest request) {
+        Optional<Usuarios> userOptional = service.getByEmail(request.getEmail());
+
+        if (userOptional.isPresent()) {
+            Usuarios user = userOptional.get();
+            if (user.getPassword().equals(request.getPassword())) {
+                return ResponseEntity.ok(user);
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 
@@ -63,4 +117,23 @@ public class UsuariosController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @GetMapping("/favoritos/{email}")
+    public ResponseEntity<List<Document>> obtenerFavoritos(@PathVariable String email) {
+        List<Document> motosFavoritas = service.obtenerMotosFavoritasDelUsuario(email);
+        return ResponseEntity.ok(motosFavoritas);
+    }
+
+    @PostMapping("/favoritos/agregar/{email}/{modelo}")
+    public ResponseEntity<String> agregarFavorito(@PathVariable String email, @PathVariable String modelo) {
+        service.agregarMotoAFavoritos(email, modelo);
+        return ResponseEntity.ok("Moto agregada a favoritos.");
+    }
+
+    @DeleteMapping("/favoritos/eliminar/{email}/{modelo}")
+    public ResponseEntity<String> eliminarFavorito(@PathVariable String email, @PathVariable String modelo) {
+        service.eliminarMotoDeFavoritos(email, modelo);
+        return ResponseEntity.ok("Moto eliminada de favoritos.");
+    }
+
 }
