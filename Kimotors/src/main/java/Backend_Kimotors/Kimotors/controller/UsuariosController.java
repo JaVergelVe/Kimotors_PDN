@@ -19,7 +19,6 @@ public class UsuariosController {
     @Autowired
     private UsuariosService service;
 
-
     // Agregar comentario
     @PostMapping("/{username}/comentarios")
     public ResponseEntity<?> agregarComentario(@PathVariable String username, @RequestBody Comentario comentario) {
