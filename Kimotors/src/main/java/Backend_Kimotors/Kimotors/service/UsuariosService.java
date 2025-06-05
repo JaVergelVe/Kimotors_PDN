@@ -1,10 +1,15 @@
 package Backend_Kimotors.Kimotors.service;
 
+import Backend_Kimotors.Kimotors.model.Comentarios.Comentario;
 import Backend_Kimotors.Kimotors.model.usuarios.Usuarios;
+import Backend_Kimotors.Kimotors.repository.MotocicletasRepositoryCustom;
 import Backend_Kimotors.Kimotors.repository.UsuariosRepository;
+import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,9 +19,14 @@ public class UsuariosService {
     private final UsuariosRepository usuariosRepository;
 
     @Autowired
+    private MotocicletasRepositoryCustom motocicletasRepository;
+
+    @Autowired
     public UsuariosService(UsuariosRepository usuariosRepository) {
         this.usuariosRepository = usuariosRepository;
     }
+
+
 
     public List<Usuarios> getAll() {
         return usuariosRepository.findAll();
@@ -48,4 +58,42 @@ public class UsuariosService {
             throw new IllegalArgumentException("Usuario no encontrado");
         }
     }
+
+    public List<Document> obtenerMotosFavoritasDelUsuario(String email) {
+        Usuarios usuario = usuariosRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        List<String> favoritos = usuario.getFavoritos();
+
+        return motocicletasRepository.motosFavoritasDeUsuario(favoritos);
+    }
+
+    public void agregarMotoAFavoritos(String email, String modeloMoto) {
+        Usuarios usuario = usuariosRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        List<String> favoritos = usuario.getFavoritos();
+        if (favoritos == null) {
+            favoritos = new ArrayList<>();
+        }
+
+        if (!favoritos.contains(modeloMoto)) {
+            favoritos.add(modeloMoto);
+            usuario.setFavoritos(favoritos);
+            usuariosRepository.save(usuario);
+        }
+    }
+
+    public void eliminarMotoDeFavoritos(String email, String modeloMoto) {
+        Usuarios usuario = usuariosRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        List<String> favoritos = usuario.getFavoritos();
+        if (favoritos != null && favoritos.contains(modeloMoto)) {
+            favoritos.remove(modeloMoto);
+            usuario.setFavoritos(favoritos);
+            usuariosRepository.save(usuario);
+        }
+    }
+
 }
